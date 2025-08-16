@@ -122,6 +122,23 @@ app.post('/room', middleware, async (req, res) => {
 
 })
 
-app.listen(3000, () => {
-    console.log('Server Running on PORT:3000')
+app.get("/chats/:roomId" , async (req,res) => {
+    const roomId = Number(req.params.roomId);
+    const message = await db.chat.findMany({
+        where: {
+            roomId
+        },
+        orderBy: {
+            id: "desc"
+        },
+        take: 50
+    })
+
+    return res.json({
+        message
+    })
+})
+
+app.listen(3001, () => {
+    console.log('Server Running on PORT:3001')
 })
